@@ -11,5 +11,5 @@ buildscript {
 apply plugin: 'com.mparticle.kit'
 
 dependencies {
-    compile 'com.crittercism:crittercism-android-agent:5.5.1'
+    compile 'com.crittercism:crittercism-android-agent:5.5.5'
 }
