@@ -130,6 +130,31 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
     }
 
     @Override
+    public void setUserAttributeList(String key, List<String> list) {
+
+    }
+
+    @Override
+    public boolean supportsAttributeLists() {
+        return false;
+    }
+
+    @Override
+    public void setAllUserAttributes(Map<String, String> userAttributes, Map<String, List<String>> userAttributeList) {
+        if (mUserAttributes == null) {
+            mUserAttributes = new JSONObject();
+        }
+        for (Map.Entry<String, String> entry : userAttributes.entrySet()){
+            try {
+                mUserAttributes.put(entry.getKey(), entry.getValue());
+            } catch (JSONException e) {
+
+            }
+        }
+        Crittercism.setMetadata(mUserAttributes);
+    }
+
+    @Override
     public void removeUserAttribute(String key) {
         mUserAttributes.remove(KitUtils.sanitizeAttributeKey(key));
         Crittercism.setMetadata(mUserAttributes);
