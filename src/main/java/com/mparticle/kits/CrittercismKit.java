@@ -1,6 +1,5 @@
 package com.mparticle.kits;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.crittercism.app.Crittercism;
@@ -9,7 +8,6 @@ import com.mparticle.MPEvent;
 import com.mparticle.MParticle;
 import com.mparticle.commerce.CommerceEvent;
 import com.mparticle.commerce.Product;
-import com.mparticle.internal.CommerceEventUtil;
 import com.mparticle.internal.ConfigManager;
 
 import org.json.JSONException;
@@ -90,7 +88,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
                 Crittercism.endTransaction(event.getProductAction());
             }
         } else {
-            List<MPEvent> eventList = CommerceEventUtil.expand(event);
+            List<MPEvent> eventList = CommerceEventUtils.expand(event);
             for (MPEvent mpEvent : eventList) {
                 logEvent(mpEvent);
             }
