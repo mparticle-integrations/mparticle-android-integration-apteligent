@@ -32,7 +32,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
 
     @Override
     public String getName() {
-        return "Crittercism";
+        return "Apteligent";
     }
 
     @Override
