@@ -9,6 +9,7 @@ import com.mparticle.MParticle;
 import com.mparticle.commerce.CommerceEvent;
 import com.mparticle.commerce.Product;
 import com.mparticle.internal.ConfigManager;
+import com.mparticle.internal.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -194,7 +195,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
         try {
             critUrl = new URL(url);
         } catch (MalformedURLException e) {
-            ConfigManager.log(MParticle.LogLevel.ERROR, "Invalid URL sent to logNetworkPerformance: " + url);
+            Logger.error("Invalid URL sent to logNetworkPerformance: " + url);
         }
         Crittercism.logNetworkRequest(method, critUrl, length, bytesReceived, bytesSent, responseCode, null);
         ReportingMessage message = new ReportingMessage(this, ReportingMessage.MessageType.NETWORK_PERFORMNACE, System.currentTimeMillis(), null);
