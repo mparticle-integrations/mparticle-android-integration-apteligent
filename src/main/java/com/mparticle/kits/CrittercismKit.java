@@ -197,7 +197,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
             ConfigManager.log(MParticle.LogLevel.ERROR, "Invalid URL sent to logNetworkPerformance: " + url);
         }
         Crittercism.logNetworkRequest(method, critUrl, length, bytesReceived, bytesSent, responseCode, null);
-        ReportingMessage message = new ReportingMessage(this, ReportingMessage.MessageType.NETWORK_PERFORMNACE, System.currentTimeMillis(), null);
+        ReportingMessage message = new ReportingMessage(this, ReportingMessage.MessageType.NETWORK_PERFORMANCE, System.currentTimeMillis(), null);
         return Arrays.asList(message);
     }
 }
