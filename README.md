@@ -8,7 +8,7 @@ This repository contains the [Apteligent](https://www.apteligent.com/) integrati
 
     ```groovy
     dependencies {
-        compile 'com.mparticle:android-apteligent-kit:4+'
+        compile 'com.mparticle:android-apteligent-kit:5+'
     }
     ```
 2. Follow the mParticle Android SDK [quick-start](https://github.com/mParticle/mparticle-android-sdk), then rebuild and launch your app, and verify that you see `"Apteligent detected"` in the output of `adb logcat`.
