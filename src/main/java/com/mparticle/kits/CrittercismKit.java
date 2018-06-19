@@ -10,6 +10,8 @@ import com.mparticle.commerce.CommerceEvent;
 import com.mparticle.commerce.Product;
 import com.mparticle.internal.ConfigManager;
 import com.mparticle.internal.Logger;
+import com.mparticle.kits_core.KitIntegration;
+import com.mparticle.kits_core.ReportingMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ import java.util.Map;
 /**
  * Crittercism Kit for version 5.5.x of the Crittercism SDK.
  */
-public class CrittercismKit extends KitIntegration implements KitIntegration.CommerceListener, KitIntegration.EventListener, KitIntegration.AttributeListener {
+public class CrittercismKit extends AbstractKitIntegration implements KitIntegration.CommerceListener, KitIntegration.EventListener, KitIntegration.AttributeListener {
 
     private static final String APP_ID = "appid";
     private static final String SERVICE_MONITORING = "service_monitoring_enabled";
@@ -37,7 +39,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
     }
 
     @Override
-    protected List<ReportingMessage> onKitCreate(Map<String, String> settings, Context context) {
+    public List<ReportingMessage> onKitCreate(Map<String, String> settings, Context context) {
         onCreate();
         return null;
     }
@@ -64,7 +66,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
     public List<ReportingMessage> leaveBreadcrumb(String breadcrumb) {
         Crittercism.leaveBreadcrumb(breadcrumb);
         List<ReportingMessage> messages = new LinkedList<ReportingMessage>();
-        messages.add(new ReportingMessage(this, ReportingMessage.MessageType.BREADCRUMB, System.currentTimeMillis(), null));
+        messages.add(new ReportingMessageImpl(this, ReportingMessageImpl.MessageType.BREADCRUMB, System.currentTimeMillis(), null));
         return messages;
     }
 
@@ -95,7 +97,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
             }
         }
         List<ReportingMessage> messages = new LinkedList<ReportingMessage>();
-        messages.add(ReportingMessage.fromEvent(this, event));
+        messages.add(ReportingMessageImpl.fromEvent(this, event));
         return messages;
     }
 
@@ -162,26 +164,26 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
     @Override
     public List<ReportingMessage> setOptOut(boolean optOutStatus) {
         Crittercism.setOptOutStatus(optOutStatus);
-        return Arrays.asList(new ReportingMessage(this, ReportingMessage.MessageType.OPT_OUT, System.currentTimeMillis(), null));
+        return Arrays.asList((ReportingMessage)new ReportingMessageImpl(this, ReportingMessageImpl.MessageType.OPT_OUT, System.currentTimeMillis(), null));
     }
 
     @Override
     public List<ReportingMessage> logEvent(MPEvent event) {
         Crittercism.leaveBreadcrumb(event.getEventName());
-        return Arrays.asList(ReportingMessage.fromEvent(this, event));
+        return Arrays.asList(ReportingMessageImpl.fromEvent(this, event));
     }
 
     @Override
     public List<ReportingMessage> logScreen(String screenName, Map<String, String> eventAttributes) {
         Crittercism.leaveBreadcrumb(screenName);
-        return Arrays.asList(new ReportingMessage(this, ReportingMessage.MessageType.SCREEN_VIEW, System.currentTimeMillis(), null).setScreenName(screenName));
+        return Arrays.asList((ReportingMessage)new ReportingMessageImpl(this, ReportingMessageImpl.MessageType.SCREEN_VIEW, System.currentTimeMillis(), null).setScreenName(screenName));
     }
 
     @Override
     public List<ReportingMessage> logException(Exception exception, Map<String, String> eventData, String message) {
         Crittercism.logHandledException(exception);
 
-        ReportingMessage reportingMessage = new ReportingMessage(this, ReportingMessage.MessageType.ERROR, System.currentTimeMillis(), eventData);
+        ReportingMessage reportingMessage = new ReportingMessageImpl(this, ReportingMessageImpl.MessageType.ERROR, System.currentTimeMillis(), eventData);
         if (exception != null) {
             reportingMessage.setExceptionClassName(exception.getClass().getCanonicalName());
         }
@@ -198,7 +200,7 @@ public class CrittercismKit extends KitIntegration implements KitIntegration.Com
             Logger.error("Invalid URL sent to logNetworkPerformance: " + url);
         }
         Crittercism.logNetworkRequest(method, critUrl, length, bytesReceived, bytesSent, responseCode, null);
-        ReportingMessage message = new ReportingMessage(this, ReportingMessage.MessageType.NETWORK_PERFORMNACE, System.currentTimeMillis(), null);
+        ReportingMessage message = new ReportingMessageImpl(this, ReportingMessageImpl.MessageType.NETWORK_PERFORMNACE, System.currentTimeMillis(), null);
         return Arrays.asList(message);
     }
 }
