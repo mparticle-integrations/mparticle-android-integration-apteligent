@@ -10,8 +10,8 @@ import com.mparticle.commerce.CommerceEvent;
 import com.mparticle.commerce.Product;
 import com.mparticle.internal.ConfigManager;
 import com.mparticle.internal.Logger;
-import com.mparticle.kits_core.KitIntegration;
-import com.mparticle.kits_core.ReportingMessage;
+import com.mparticle.kits.core.KitIntegration;
+import com.mparticle.kits.core.ReportingMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
