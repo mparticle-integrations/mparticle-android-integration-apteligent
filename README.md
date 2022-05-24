@@ -16,7 +16,7 @@ This repository contains the [Apteligent](https://www.apteligent.com/) integrati
 
 ### Documentation
 
-[Apteligent integration](http://docs.mparticle.com/?java#apteligent)
+[Apteligent integration](https://docs.mparticle.com/integrations/apteligent/event/)
 
 ### License
 
