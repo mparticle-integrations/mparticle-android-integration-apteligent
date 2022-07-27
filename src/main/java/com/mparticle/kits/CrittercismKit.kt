@@ -134,7 +134,7 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
     ) {
         mUserAttributes = mUserAttributes ?: JSONObject()
         mUserAttributes?.let {
-            userAttributes.forEach { (key, value) ->
+            userAttributes.iterator()?.forEach { (key, value) ->
                 try {
                     it.put(key, value)
                 } catch (_: JSONException) {
