@@ -21,9 +21,8 @@ apply plugin: 'kotlin-android'
 
 dependencies {
     api 'com.crittercism:crittercism-android-agent:[5.8,5.9)'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    testImplementation 'junit:junit:4.13.2'
 }
+
 repositories {
     mavenCentral()
 }
