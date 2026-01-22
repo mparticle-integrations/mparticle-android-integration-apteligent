@@ -8,7 +8,7 @@ import org.mockito.Mockito
 
 class ApteligentKitTests {
     private val kit: KitIntegration
-         get() = CrittercismKit()
+        get() = CrittercismKit()
 
     @Test
     @Throws(Exception::class)
@@ -27,7 +27,7 @@ class ApteligentKitTests {
         var e: Exception? = null
         try {
             val kit = kit
-            val settings = HashMap<String,String>()
+            val settings = HashMap<String, String>()
             settings["fake setting"] = "fake"
             kit.onKitCreate(settings, Mockito.mock(Context::class.java))
         } catch (ex: Exception) {

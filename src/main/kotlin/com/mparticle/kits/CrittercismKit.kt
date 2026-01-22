@@ -1,35 +1,39 @@
 package com.mparticle.kits
 
 import android.content.Context
-import com.mparticle.kits.KitIntegration.CommerceListener
-import com.mparticle.kits.KitIntegration.AttributeListener
-import org.json.JSONObject
-import com.mparticle.MParticle
 import com.crittercism.app.Crittercism
 import com.crittercism.app.CrittercismConfig
-import java.util.LinkedList
+import com.mparticle.MPEvent
+import com.mparticle.MParticle
+import com.mparticle.MParticle.IdentityType
 import com.mparticle.commerce.CommerceEvent
 import com.mparticle.commerce.Product
-import com.mparticle.MPEvent
-import com.mparticle.MParticle.IdentityType
 import com.mparticle.internal.Logger
+import com.mparticle.kits.KitIntegration.AttributeListener
+import com.mparticle.kits.KitIntegration.CommerceListener
 import org.json.JSONException
+import org.json.JSONObject
 import java.lang.Exception
 import java.math.BigDecimal
-import java.net.URL
 import java.net.MalformedURLException
+import java.net.URL
+import java.util.LinkedList
 
 /**
  * Crittercism Kit for version 5.5.x of the Crittercism SDK.
  */
-class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventListener,
+class CrittercismKit :
+    KitIntegration(),
+    CommerceListener,
+    KitIntegration.EventListener,
     AttributeListener {
     private var mUserAttributes: JSONObject? = null
+
     override fun getName(): String = KIT_NAME
 
     override fun onKitCreate(
         settings: Map<String, String>,
-        context: Context
+        context: Context,
     ): List<ReportingMessage> {
         onCreate()
         return emptyList()
@@ -60,31 +64,34 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
                 this,
                 ReportingMessage.MessageType.BREADCRUMB,
                 System.currentTimeMillis(),
-                null
-            )
+                null,
+            ),
         )
         return messages
     }
 
     override fun logError(
         message: String,
-        errorAttributes: Map<String, String>
+        errorAttributes: Map<String, String>,
     ): List<ReportingMessage> = emptyList()
 
     override fun logLtvIncrease(
         valueIncreased: BigDecimal,
         valueTotal: BigDecimal,
         eventName: String,
-        contextInfo: Map<String, String>
+        contextInfo: Map<String, String>,
     ): List<ReportingMessage> = emptyList()
 
     override fun logEvent(event: CommerceEvent): List<ReportingMessage> {
         if (event.productAction == Product.PURCHASE || event.productAction == Product.REFUND) {
             Crittercism.beginTransaction(event.productAction)
             event.transactionAttributes
-                ?.revenue?.times(100)?.let {
+                ?.revenue
+                ?.times(100)
+                ?.let {
                     Crittercism.setTransactionValue(
-                        event.productAction, it.toInt()
+                        event.productAction,
+                        it.toInt(),
                     )
                 }
             if (event.productAction == Product.REFUND) {
@@ -103,7 +110,10 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
         return messages
     }
 
-    override fun setUserIdentity(identityType: IdentityType, identity: String) {
+    override fun setUserIdentity(
+        identityType: IdentityType,
+        identity: String,
+    ) {
         if (IdentityType.CustomerId == identityType) {
             Crittercism.setUsername(identity)
         }
@@ -117,7 +127,10 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
 
     override fun logout(): List<ReportingMessage> = emptyList()
 
-    override fun setUserAttribute(key: String, value: String) {
+    override fun setUserAttribute(
+        key: String,
+        value: String,
+    ) {
         try {
             mUserAttributes?.put(KitUtils.sanitizeAttributeKey(key), value)
         } catch (e: JSONException) {
@@ -125,12 +138,16 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
         Crittercism.setMetadata(mUserAttributes)
     }
 
-    override fun setUserAttributeList(key: String, list: List<String>) {}
+    override fun setUserAttributeList(
+        key: String,
+        list: List<String>,
+    ) {}
+
     override fun supportsAttributeLists(): Boolean = false
 
     override fun setAllUserAttributes(
         userAttributes: Map<String, String>,
-        userAttributeList: Map<String, List<String>>
+        userAttributeList: Map<String, List<String>>,
     ) {
         mUserAttributes = mUserAttributes ?: JSONObject()
         mUserAttributes?.let {
@@ -156,8 +173,8 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
                 this,
                 ReportingMessage.MessageType.OPT_OUT,
                 System.currentTimeMillis(),
-                null
-            )
+                null,
+            ),
         )
     }
 
@@ -168,7 +185,7 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
 
     override fun logScreen(
         screenName: String,
-        eventAttributes: Map<String, String>
+        eventAttributes: Map<String, String>,
     ): List<ReportingMessage> {
         Crittercism.leaveBreadcrumb(screenName)
         return listOf(
@@ -176,23 +193,24 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
                 this,
                 ReportingMessage.MessageType.SCREEN_VIEW,
                 System.currentTimeMillis(),
-                null
-            ).setScreenName(screenName)
+                null,
+            ).setScreenName(screenName),
         )
     }
 
     override fun logException(
         exception: Exception,
         eventData: Map<String, String>,
-        message: String
+        message: String,
     ): List<ReportingMessage> {
         Crittercism.logHandledException(exception)
-        val reportingMessage = ReportingMessage(
-            this,
-            ReportingMessage.MessageType.ERROR,
-            System.currentTimeMillis(),
-            eventData
-        )
+        val reportingMessage =
+            ReportingMessage(
+                this,
+                ReportingMessage.MessageType.ERROR,
+                System.currentTimeMillis(),
+                eventData,
+            )
         reportingMessage.setExceptionClassName(exception.javaClass.canonicalName)
         return listOf(reportingMessage)
     }
@@ -205,7 +223,7 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
         bytesSent: Long,
         bytesReceived: Long,
         requestString: String,
-        responseCode: Int
+        responseCode: Int,
     ): List<ReportingMessage> {
         var critUrl: URL? = null
         try {
@@ -220,15 +238,15 @@ class CrittercismKit : KitIntegration(), CommerceListener, KitIntegration.EventL
             bytesReceived,
             bytesSent,
             responseCode,
-            null
+            null,
         )
         return listOf(
             ReportingMessage(
                 this,
                 ReportingMessage.MessageType.NETWORK_PERFORMNACE,
                 System.currentTimeMillis(),
-                null
-            )
+                null,
+            ),
         )
     }
 
